@@ -1,5 +1,6 @@
 # Chef Cookbook Collection
 
-Various cookbooks used for ruby and node development. Made to be used with Ubuntu.
+Various cookbooks I stole/gatherd/hacked together from around the interwebz. I use Ubuntu so any hacks I do will probally only
+work on ubuntu or debian boxes. 
 
-Based on the [opscode](https://github.com/opscode/cookbooks) cookbooks.
+Works great with [vagrant](https://github.com/mitchellh/vagrant) on OS X.
