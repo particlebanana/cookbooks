@@ -1,8 +1,10 @@
 #
 # Cookbook Name:: rvm
-# Recipe:: default
+# Resource:: environment
 #
-# Copyright 2010, 2011, Fletcher Nichol
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
+#
+# Copyright 2011, Fletcher Nichol
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,23 +19,12 @@
 # limitations under the License.
 #
 
-# install rvm api gem during chef compile phase
-gem_package 'rvm' do
-  action :nothing
-end.run_action(:install)
+actions :create
 
-require 'rubygems'
-Gem.clear_paths
-require 'rvm'
-create_rvm_shell_chef_wrapper
-create_rvm_chef_user_environment
+attribute :ruby_string, :kind_of => String, :name_attribute => true
+attribute :user,        :kind_of => String
 
-class Chef::Resource
-  # mix in #rvm_cmd_wrap helper into resources
-  include Chef::RVM::ShellHelpers
-end
-
-class Chef::Recipe
-  # mix in recipe helpers
-  include Chef::RVM::RecipeHelpers
+def initialize(*args)
+  super
+  @action = :create
 end

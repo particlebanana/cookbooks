@@ -1,6 +1,8 @@
 #
 # Cookbook Name:: rvm
-# Recipe:: default
+# Attributes:: vagrant
+#
+# Author:: Fletcher Nichol <fnichol@nichol.ca>
 #
 # Copyright 2010, 2011, Fletcher Nichol
 #
@@ -17,23 +19,4 @@
 # limitations under the License.
 #
 
-# install rvm api gem during chef compile phase
-gem_package 'rvm' do
-  action :nothing
-end.run_action(:install)
-
-require 'rubygems'
-Gem.clear_paths
-require 'rvm'
-create_rvm_shell_chef_wrapper
-create_rvm_chef_user_environment
-
-class Chef::Resource
-  # mix in #rvm_cmd_wrap helper into resources
-  include Chef::RVM::ShellHelpers
-end
-
-class Chef::Recipe
-  # mix in recipe helpers
-  include Chef::RVM::RecipeHelpers
-end
+default['rvm']['vagrant']['system_chef_solo'] = "/opt/ruby/bin/chef-solo"
