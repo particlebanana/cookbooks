@@ -1,15 +1,16 @@
 #
+# Author:: Marius Ducea (marius@promethost.com)
 # Cookbook Name:: mongodb
-# Attributes:: default
+# Recipe:: default
 #
-# Copyright 2010, edelight GmbH
+# Copyright 2010, Promet Solutions
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,12 +18,18 @@
 # limitations under the License.
 #
 
-default[:mongodb][:dbpath] = "/var/lib/mongodb"
-default[:mongodb][:logpath] = "/var/log/mongodb"
-default[:mongodb][:port] = 27017
+include_recipe "mongodb-debs::repo"
 
-# roles
-default[:mongodb][:client_roles] = []
-default[:mongodb][:cluster_role] = nil
-default[:mongodb][:shard_name] = "default"
+package "mongodb-10gen"
 
+service "mongodb" do
+  action [ :enable, :start ]
+end
+
+template "/etc/mongodb.conf" do
+  source "mongodb.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :restart, resources(:service => "mongodb")
+end
